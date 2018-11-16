@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="card m-4" style="width:310px">
+        <h1 class="card-header text-right pr-4">0</h1>
+        <div class="card-body">
+            <div class="row pl-3">
+                <button id="button-clear" class="btn btn-danger btn-lg special m-2" style="width:50px" value="clear">C</button>
+                <button id="button-invert" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="invert">±</button>
+                <button id="button-percent" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="percent">%</button>
+                <button id="button-divide" class="btn btn-secondary btn-lg special m-2 " style="width:50px" value="divide">÷</button>
+            </div>
+            <div class="row pl-3">
+                <button id="button-7" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="7">7</button>
+                <button id="button-8" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="8">8</button>
+                <button id="button-9" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="9">9</button>
+                <button id="button-multiply" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="multiply">x</button>
+            </div>
+            <div class="row pl-3">
+                <button id="button-4" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="4">4</button>
+                <button id="button-5" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="5">5</button>
+                <button id="button-6" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="6">6</button>
+                <button id="button-minus" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="minus">-</button>
+            </div>
+            <div class="row pl-3">
+                <button id="button-1" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="1">1</button>
+                <button id="button-2" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="2">2</button>
+                <button id="button-3" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="3">3</button>
+                <button id="button-plus" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="plus">+</button>
+            </div>
+            <div class="row pl-3">
+                <button id="button-0" class="btn btn-outline-secondary btn-lg number m-2 " style="width:116px" value="0">0</button>
+                <button id="button-decimal" class="btn btn-outline-secondary btn-lg special m-2 " style="width:50px"
+                    value="decimal">.</button>
+                <button id="button-equal" class="btn btn-primary btn-lg equal m-2 " style="width:50px" value="equal">=</button>
+            </div>
+        </div>
+        <div class="card-footer text-center text-muted small">
+            © Copyright 2018 Joseph Ahn
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+        });
+    </script>
+</body>
+
+</html>
