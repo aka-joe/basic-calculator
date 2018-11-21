@@ -24,13 +24,14 @@
 </head>
 
 <body>
+    <!--- Calculator layout -->
     <div class="card center">
         <h1 id="result" class="card-header text-right pr-4">0</h1>
         <div class="card-body">
             <div class="row pl-3">
                 <button id="button-clear" class="btn btn-danger btn-lg clear m-2" style="width:50px" value="clear">C</button>
-                <button id="button-invert" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="invert">±</button>
-                <button id="button-percent" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="percent">%</button>
+                <button id="button-invert" class="btn btn-danger btn-lg invert m-2 " style="width:50px" value="invert">±</button>
+                <button id="button-percent" class="btn btn-danger btn-lg percent m-2 " style="width:50px" value="percent">%</button>
                 <button id="button-divide" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="divide">÷</button>
             </div>
             <div class="row pl-3">
@@ -66,43 +67,100 @@
     <script>
         $(document).ready(function () {
 
+            // Initialize variables
             var num1 = "";
             var num2 = "";
             var op = null;
             var decimal = false;
-            var answer;
+            var answer = 0;
+            var lastNum;
+            var lastAction;
 
+            // When number button is clicked
             $(".number").on("click", function () {
                 if (op === null) {
-                    num1 += $(this).attr("value");
-                    $("#result").text(num1);
+                    num1 = numbering(num1, $(this).attr("value"));
+                    display(Number(num1));
                 } else {
-                    num2 += $(this).attr("value");
-                    $("#result").text(num2);
+                    num2 = numbering(num2, $(this).attr("value"));
+                    display(Number(num2));
                 };
             });
 
             function numbering(x, y) {
                 var z;
-                if (x === null) {
-                    x = 0;
-                };
-                if (decimal === 0) {
-                    z = x * 10 + y;
+                // If the user inputs more than 10 numbers, stop getting number
+                if (Math.abs(Number(x)).toString().length < 11) {
+                    if (x === "" || x === "0") {
+                        z = y;
+                    } else {
+                        z = x + y;
+                    };
                 } else {
-                    z = x + y / Math.pow(10, decimal++);
-                };
+                    z = x;
+                }
                 return z;
             };
 
+            // If 'decimal' button is clicked
             $(".decimal").on("click", function () {
-                if (decimal === 0) {
-                    decimal = 1;
+                if (!decimal) {
+                    decimal = true;
+                    if (op === null) {
+                        if (num1 === "") {
+                            num1 = "0.";
+                        } else {
+                            num1 += ".";
+                        };
+                    } else {
+                        if (num2 === "") {
+                            num2 = "0.";
+                        } else {
+                            num2 += ".";
+                        };
+                    }
                 }
             });
 
+            // If '+-' button is clicked
+            $(".invert").on("click", function () {
+                if (num1 === "") {
+                    answer = answer * (-1);
+                    display(answer);
+                } else if (op === null) {
+                    num1 = (Number(num1) * (-1)).toString();
+                    display(Number(num1));
+                } else {
+                    if (num2 != "") {
+                        num2 = (Number(num2) * (-1)).toString();
+                        display(Number(num2));
+                    }
+                }
+            });
+
+            // If % button is clicked
+            $(".percent").on("click", function () {
+                if (num1 === "") {
+                    answer = answer / 100;
+                    display(answer);
+                } else if (op === null) {
+                    num1 = (Number(num1) / 100).toString();
+                    display(Number(num1));
+                } else {
+                    if (num2 != "") {
+                        num2 = (Number(num2) / 100).toString();
+                        display(Number(num2));
+                    }
+                }
+            });
+
+            // If an operation button is clicked
             $(".operator").on("click", function () {
-                if (num1 != null && num2 === null) {
+                if (num2 === "") {
+                    if (num1 === "") {
+                        num1 = answer.toString();
+                    }
+                    decimal = false;
                     op = ($(this).attr("value"));
                     if (op === "plus") {
                         op = "+";
@@ -113,40 +171,76 @@
                     } else {
                         op = "÷";
                     }
-                    // $("#result").text(op);
                 };
             });
 
+            // If '=' button is clicked
             $(".equal").on("click", function () {
-                if (num1 != null && num2 != null && op != null) {
-                    if (op === "+") {
-                        answer = num1 + num2;
-                    } else if (op === "-") {
-                        answer = num1 - num2;
-                    } else if (op === "x") {
-                        answer = num1 * num2;
-                    } else {
-                        answer = num1 / num2;
-                    }
-                    $("#result").text(answer);
-                    reset();
+                if (num1 === "") {
+                    num1 = answer;
+                    num2 = lastNum;
+                    op = lastAction;
+                } else if (num2 === "") {
+                    num2 = num1;
                 };
+                var n1 = Number(num1);
+                var n2 = Number(num2);
+                if (op === "+") {
+                    answer = n1 + n2;
+                } else if (op === "-") {
+                    answer = n1 - n2;
+                } else if (op === "x") {
+                    answer = n1 * n2;
+                } else {
+                    answer = n1 / n2;
+                };
+                display(answer);
+                lastNum = n2.toString();
+                lastAction = op;
+                reset();
             });
 
+            // Display number on the screen
+            function display(num) {
+                var result;
+                // If number is too long
+                if (Math.floor(Math.abs(num)).toString().length > 11) {
+                    // If number is larger than 10^100, show error message and reset
+                    if (Math.abs(num) >= Math.pow(10, 100)) {
+                        result = "Error";
+                        answer = 0;
+                        reset();
+                    } else {
+                        // Show the number as scientific notation
+                        result = num.toExponential(5);
+                    };
+                } else {
+                    if (num.toString().length > 10) {
+                        if (num != Math.floor(num)) {
+                            result = Number(num.toPrecision(10).toString()); // To fix decimal bug
+                        } else {
+                            result = Number(num.toPrecision(11).toString()); // To fix decimal bug
+                        };
+                    } else {
+                        result = num;
+                    };
+                };
+                $("#result").text(result);
+            };
+
+            // If [C]lear button is clicked
             $(".clear").on("click", function () {
-                num1 = null;
-                num2 = null;
-                op = null;
-                decimal = false;
+                reset();
                 $("#result").text(0);
             });
 
+            // Reset everything
             function reset() {
-                num1 = null;
-                num2 = null;
+                num1 = "";
+                num2 = "";
                 op = null;
                 decimal = false;
-            }
+            };
         });
     </script>
 </body>
