@@ -25,13 +25,13 @@
 
 <body>
     <div class="card center">
-        <h1 class="card-header text-right pr-4">0</h1>
+        <h1 id="result" class="card-header text-right pr-4">0</h1>
         <div class="card-body">
             <div class="row pl-3">
-                <button id="button-clear" class="btn btn-danger btn-lg special m-2" style="width:50px" value="clear">C</button>
+                <button id="button-clear" class="btn btn-danger btn-lg clear m-2" style="width:50px" value="clear">C</button>
                 <button id="button-invert" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="invert">±</button>
                 <button id="button-percent" class="btn btn-danger btn-lg special m-2 " style="width:50px" value="percent">%</button>
-                <button id="button-divide" class="btn btn-secondary btn-lg special m-2 " style="width:50px" value="divide">÷</button>
+                <button id="button-divide" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="divide">÷</button>
             </div>
             <div class="row pl-3">
                 <button id="button-7" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="7">7</button>
@@ -53,7 +53,7 @@
             </div>
             <div class="row pl-3">
                 <button id="button-0" class="btn btn-outline-secondary btn-lg number m-2 " style="width:116px" value="0">0</button>
-                <button id="button-decimal" class="btn btn-outline-secondary btn-lg special m-2 " style="width:50px"
+                <button id="button-decimal" class="btn btn-outline-secondary btn-lg decimal m-2 " style="width:50px"
                     value="decimal">.</button>
                 <button id="button-equal" class="btn btn-primary btn-lg equal m-2 " style="width:50px" value="equal">=</button>
             </div>
@@ -65,6 +65,88 @@
 
     <script>
         $(document).ready(function () {
+
+            var num1 = "";
+            var num2 = "";
+            var op = null;
+            var decimal = false;
+            var answer;
+
+            $(".number").on("click", function () {
+                if (op === null) {
+                    num1 += $(this).attr("value");
+                    $("#result").text(num1);
+                } else {
+                    num2 += $(this).attr("value");
+                    $("#result").text(num2);
+                };
+            });
+
+            function numbering(x, y) {
+                var z;
+                if (x === null) {
+                    x = 0;
+                };
+                if (decimal === 0) {
+                    z = x * 10 + y;
+                } else {
+                    z = x + y / Math.pow(10, decimal++);
+                };
+                return z;
+            };
+
+            $(".decimal").on("click", function () {
+                if (decimal === 0) {
+                    decimal = 1;
+                }
+            });
+
+            $(".operator").on("click", function () {
+                if (num1 != null && num2 === null) {
+                    op = ($(this).attr("value"));
+                    if (op === "plus") {
+                        op = "+";
+                    } else if (op === "minus") {
+                        op = "-";
+                    } else if (op === "multiply") {
+                        op = "x";
+                    } else {
+                        op = "÷";
+                    }
+                    // $("#result").text(op);
+                };
+            });
+
+            $(".equal").on("click", function () {
+                if (num1 != null && num2 != null && op != null) {
+                    if (op === "+") {
+                        answer = num1 + num2;
+                    } else if (op === "-") {
+                        answer = num1 - num2;
+                    } else if (op === "x") {
+                        answer = num1 * num2;
+                    } else {
+                        answer = num1 / num2;
+                    }
+                    $("#result").text(answer);
+                    reset();
+                };
+            });
+
+            $(".clear").on("click", function () {
+                num1 = null;
+                num2 = null;
+                op = null;
+                decimal = false;
+                $("#result").text(0);
+            });
+
+            function reset() {
+                num1 = null;
+                num2 = null;
+                op = null;
+                decimal = false;
+            }
         });
     </script>
 </body>
