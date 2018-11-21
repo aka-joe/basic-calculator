@@ -102,7 +102,7 @@
                 return z;
             };
 
-            // If 'decimal' button is clicked
+            // When 'decimal' button is clicked
             $(".decimal").on("click", function () {
                 if (!decimal) {
                     decimal = true;
@@ -122,7 +122,7 @@
                 }
             });
 
-            // If '+-' button is clicked
+            // When '+-' button is clicked
             $(".invert").on("click", function () {
                 if (num1 === "") {
                     answer = answer * (-1);
@@ -138,7 +138,7 @@
                 }
             });
 
-            // If % button is clicked
+            // When % button is clicked
             $(".percent").on("click", function () {
                 if (num1 === "") {
                     answer = answer / 100;
@@ -154,7 +154,7 @@
                 }
             });
 
-            // If an operation button is clicked
+            // When an operation button is clicked
             $(".operator").on("click", function () {
                 if (num2 === "") {
                     if (num1 === "") {
@@ -174,7 +174,7 @@
                 };
             });
 
-            // If '=' button is clicked
+            // When '=' button is clicked
             $(".equal").on("click", function () {
                 if (num1 === "") {
                     num1 = answer;
@@ -195,6 +195,7 @@
                     answer = n1 / n2;
                 };
                 display(answer);
+                // Before reset, remember the last number and operation
                 lastNum = n2.toString();
                 lastAction = op;
                 reset();
@@ -228,7 +229,7 @@
                 $("#result").text(result);
             };
 
-            // If [C]lear button is clicked
+            // When [C]lear button is clicked
             $(".clear").on("click", function () {
                 reset();
                 $("#result").text(0);
