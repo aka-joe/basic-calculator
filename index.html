@@ -76,17 +76,44 @@
             var lastNum;
             var lastAction;
 
-            // When number button is clicked
-            $(".number").on("click", function () {
-                if (op === null) {
-                    num1 = numbering(num1, $(this).attr("value"));
-                    display(Number(num1));
-                } else {
-                    num2 = numbering(num2, $(this).attr("value"));
-                    display(Number(num2));
+            // When keyboard is pressed
+            $("body").keypress(function (event) {
+                var k = event.which;
+                if (k >= 48 && k <= 57) {
+                    numberPressed((k - 48).toString());
+                } else if (k === 46) {
+                    decimalPressed();
+                } else if (k === 37) {
+                    percentPressed();
+                } else if (k === 13 || k === 61) {
+                    equalPressed();
+                } else if (k === 43) {
+                    operatorPressed("plus");
+                } else if (k === 45) {
+                    operatorPressed("minus");
+                } else if (k === 47) {
+                    operatorPressed("divide");
+                } else if (k === 42 || k === 88 || k === 120) {
+                    operatorPressed("multiply");
+                } else if (k === 67 || k === 99) {
+                    reset();
+                    $("#result").text(0);
                 };
             });
 
+            // When number button is clicked
+            $(".number").on("click", function () {
+                numberPressed($(this).attr("value"));
+            });
+            function numberPressed(newNum) {
+                if (op === null) {
+                    num1 = numbering(num1, newNum);
+                    display(Number(num1));
+                } else {
+                    num2 = numbering(num2, newNum);
+                    display(Number(num2));
+                };
+            }
             function numbering(x, y) {
                 var z;
                 // If the user inputs more than 10 numbers, stop getting number
@@ -104,6 +131,9 @@
 
             // When 'decimal' button is clicked
             $(".decimal").on("click", function () {
+                decimalPressed();
+            });
+            function decimalPressed() {
                 if (!decimal) {
                     decimal = true;
                     if (op === null) {
@@ -120,7 +150,7 @@
                         };
                     }
                 }
-            });
+            };
 
             // When '+-' button is clicked
             $(".invert").on("click", function () {
@@ -140,6 +170,9 @@
 
             // When % button is clicked
             $(".percent").on("click", function () {
+                percentPressed();
+            });
+            function percentPressed() {
                 if (num1 === "") {
                     answer = answer / 100;
                     display(answer);
@@ -152,30 +185,35 @@
                         display(Number(num2));
                     }
                 }
-            });
+            };
 
             // When an operation button is clicked
             $(".operator").on("click", function () {
+                operatorPressed($(this).attr("value"));
+            });
+            function operatorPressed(key) {
                 if (num2 === "") {
                     if (num1 === "") {
                         num1 = answer.toString();
                     }
                     decimal = false;
-                    op = ($(this).attr("value"));
-                    if (op === "plus") {
+                    if (key === "plus") {
                         op = "+";
-                    } else if (op === "minus") {
+                    } else if (key === "minus") {
                         op = "-";
-                    } else if (op === "multiply") {
+                    } else if (key === "multiply") {
                         op = "x";
                     } else {
                         op = "÷";
                     }
                 };
-            });
+            };
 
             // When '=' button is clicked
             $(".equal").on("click", function () {
+                equalPressed();
+            });
+            function equalPressed() {
                 if (num1 === "") {
                     num1 = answer;
                     num2 = lastNum;
@@ -199,7 +237,7 @@
                 lastNum = n2.toString();
                 lastAction = op;
                 reset();
-            });
+            };
 
             // Display number on the screen
             function display(num) {
