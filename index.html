@@ -12,7 +12,7 @@
         crossorigin="anonymous"></script>
     <style>
         .center {
-            width: 310px;
+            width: 320px;
             margin: 0;
             position: absolute;
             top: 50%;
@@ -26,33 +26,33 @@
 <body>
     <!--- Calculator layout -->
     <div class="card center">
-        <h1 id="result" class="card-header text-right pr-4">0</h1>
+        <h1 id="result" class="card-header text-right pl-0 pr-3">0</h1>
         <div class="card-body">
-            <div class="row pl-3">
+            <div class="row pl-4">
                 <button id="button-clear" class="btn btn-danger btn-lg clear m-2" style="width:50px" value="clear">C</button>
                 <button id="button-invert" class="btn btn-danger btn-lg invert m-2 " style="width:50px" value="invert">±</button>
                 <button id="button-percent" class="btn btn-danger btn-lg percent m-2 " style="width:50px" value="percent">%</button>
                 <button id="button-divide" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="divide">÷</button>
             </div>
-            <div class="row pl-3">
+            <div class="row pl-4">
                 <button id="button-7" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="7">7</button>
                 <button id="button-8" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="8">8</button>
                 <button id="button-9" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="9">9</button>
                 <button id="button-multiply" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="multiply">x</button>
             </div>
-            <div class="row pl-3">
+            <div class="row pl-4">
                 <button id="button-4" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="4">4</button>
                 <button id="button-5" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="5">5</button>
                 <button id="button-6" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="6">6</button>
                 <button id="button-minus" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="minus">-</button>
             </div>
-            <div class="row pl-3">
+            <div class="row pl-4">
                 <button id="button-1" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="1">1</button>
                 <button id="button-2" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="2">2</button>
                 <button id="button-3" class="btn btn-outline-secondary btn-lg number m-2 " style="width:50px" value="3">3</button>
                 <button id="button-plus" class="btn btn-secondary btn-lg operator m-2 " style="width:50px" value="plus">+</button>
             </div>
-            <div class="row pl-3">
+            <div class="row pl-4">
                 <button id="button-0" class="btn btn-outline-secondary btn-lg number m-2 " style="width:116px" value="0">0</button>
                 <button id="button-decimal" class="btn btn-outline-secondary btn-lg decimal m-2 " style="width:50px"
                     value="decimal">.</button>
@@ -248,27 +248,36 @@
 
             // Display number on the screen
             function display(num) {
-                var result;
+                var result = num;
                 // If number is too long
                 if (Math.floor(Math.abs(num)).toString().length > 11) {
-                    // If number is larger than 10^100, show error message and reset
-                    if (Math.abs(num) >= Math.pow(10, 100)) {
+                    // Show the number as scientific notation
+                    result = num.toExponential(6).toString();
+                    // If number is way too long, show error message and reset
+                    if (Number(result.substring(result.length - 3)) > 99) {
                         result = "Error";
                         answer = 0;
                         reset();
-                    } else {
-                        // Show the number as scientific notation
-                        result = num.toExponential(5);
                     };
                 } else {
-                    if (num.toString().length > 10) {
+                    // If number is too long
+                    if (Math.abs(num).toString().length > 10) {
                         if (num != Math.floor(num)) {
                             result = Number(num.toPrecision(10).toString()); // To fix decimal bug
+                            // If number is too long
+                            if (result.toString().length > 10) {
+                                // Show the number as scientific notation
+                                result = num.toExponential(6).toString();
+                                // If number is way too long, show error message and reset
+                                if (Number(result.substring(result.length - 3)) > 99) {
+                                    result = "Error";
+                                    answer = 0;
+                                    reset();
+                                };
+                            };
                         } else {
                             result = Number(num.toPrecision(11).toString()); // To fix decimal bug
                         };
-                    } else {
-                        result = num;
                     };
                 };
                 $("#result").text(result);
