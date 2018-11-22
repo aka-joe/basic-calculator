@@ -97,6 +97,7 @@
                     operatorPressed("multiply");
                 } else if (k === 67 || k === 99) {
                     reset();
+                    answer = 0;
                     $("#result").text(0);
                 };
             });
@@ -276,6 +277,7 @@
             // When [C]lear button is clicked
             $(".clear").on("click", function () {
                 reset();
+                answer = 0;
                 $("#result").text(0);
                 $(".clear").blur();
             });
