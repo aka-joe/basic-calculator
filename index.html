@@ -104,6 +104,7 @@
             // When number button is clicked
             $(".number").on("click", function () {
                 numberPressed($(this).attr("value"));
+                $(this).blur();
             });
             function numberPressed(newNum) {
                 if (op === null) {
@@ -132,6 +133,7 @@
             // When 'decimal' button is clicked
             $(".decimal").on("click", function () {
                 decimalPressed();
+                $(".decimal").blur();
             });
             function decimalPressed() {
                 if (!decimal) {
@@ -166,11 +168,13 @@
                         display(Number(num2));
                     }
                 }
+                $(".invert").blur();
             });
 
             // When % button is clicked
             $(".percent").on("click", function () {
                 percentPressed();
+                $(".percent").blur();
             });
             function percentPressed() {
                 if (num1 === "") {
@@ -190,6 +194,7 @@
             // When an operation button is clicked
             $(".operator").on("click", function () {
                 operatorPressed($(this).attr("value"));
+                $(this).blur();
             });
             function operatorPressed(key) {
                 if (num2 === "") {
@@ -212,6 +217,7 @@
             // When '=' button is clicked
             $(".equal").on("click", function () {
                 equalPressed();
+                $(".equal").blur();
             });
             function equalPressed() {
                 if (num1 === "") {
@@ -271,6 +277,7 @@
             $(".clear").on("click", function () {
                 reset();
                 $("#result").text(0);
+                $(".clear").blur();
             });
 
             // Reset everything
