@@ -1,6 +1,6 @@
 # Basic Calculator
 
-[Click here to try this app.](https://aka-joe.github.io/simple-calculator/)
+[Click here to try this app.](https://cre8dev.github.io/simple-calculator/)
 
 * Created with html, css, javascript, Bootstrap and jQuery.
 
